@@ -15,7 +15,8 @@
                 (fn [topic meta payload]
                   (let [pollution (Integer. (String. payload "UTF-8"))]
                    (if (> pollution limit)
-                   (println (format "Danger pollution level is currently at %s over the limit of %s" pollution limit)))))))
+                     (println
+                      (format "Danger pollution level is currently at %s over the limit of %s" pollution limit)))))))
 
 (defn -main []
   (over-pollution 65)
