@@ -4,6 +4,7 @@
 
 (def conn (mh/connect "tcp://127.0.0.1:1883" (mh/generate-id)))
 (defn subscribes []
+  "simple hello world publish and subscribe"
   (mh/subscribe conn ["hello"] (fn [topic meta payload]
                                  (println (String. payload "UTF-8"))))
   (mh/publish conn "hello" "hello world"))
@@ -11,6 +12,8 @@
 (subscribes)
 
 (defn over-pollution [limit]
+  "give me a limit and if pollution levels goes over that tell me about it"
+  ;;; not happy with the way utf conversion takes place
   (mh/subscribe conn ["Pollution"]
                 (fn [topic meta payload]
                   (let [pollution (Integer. (String. payload "UTF-8"))]
