@@ -13,16 +13,17 @@
 (defn over-pollution [limit]
   (mh/subscribe conn ["Pollution"]
                 (fn [topic meta payload]
-                  (let [pollution payload]
-                    (if (> pollution limit)
-                      (println (format "Danger: Pollution is over %s limit and is at %s level" limit pollution)))))))
+                  (let [pollution (Integer. (String. payload "UTF-8"))]
+                   (if (> pollution limit)
+                   (println (format "Danger pollution level is currently at %s over the limit of %s" pollution limit)))))))
 
 (defn -main []
-  (let [id (mh/generate-id)
-        conn (mh/connect "tcp://127.0.0.1:1883" id)]
-    (over-pollution 50)
-    (dotimes [n 10] (mh/publish conn "Pollution" (str (* n 10))))
-    (Thread/sleep 100)
-    (mh/disconnect conn)))
+  (over-pollution 65)
+  (dotimes [n 10]
+    (mh/publish conn "Pollution" (str (* n 10)))
+    )
+  (Thread/sleep 100))
 
 (-main)
+
+(mh/disconnect conn)
