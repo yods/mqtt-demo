@@ -24,10 +24,22 @@
 (defn -main []
   (over-pollution 65)
   (dotimes [n 10]
-    (mh/publish conn "Pollution" (str (* n 10)))
-    )
+    (mh/publish conn "Pollution" (str (* n 10))))
   (Thread/sleep 100))
 
 (-main)
 
 (mh/disconnect conn)
+
+(mh/publish conn "Pollution" "50" 2)
+
+(defn over-pollution2 [limit]
+  "give me a limit and if pollution levels goes over that tell me about it"
+  ;;; not happy with the way utf conversion takes place
+  (mh/subscribe conn ["Pollution"] {:qos 2
+                                   :on-delivery-complete #(println "tada")}
+                (fn [topic meta payload]
+                  (let [pollution (Integer. (String. payload "UTF-8"))]
+                   (if (> pollution limit)
+                     (println
+                      (format "Danger pollution level is currently at %s over the limit of %s" pollution limit)))))))

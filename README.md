@@ -1,14 +1,8 @@
 # mqtt-demo
 
-A Clojure library designed to ... well, that part is up to you.
+A small introduction to mqtt in clojure demoing the hello world of mqtt as well as showing the publish and subscribe model.
 
-## Usage
-
-FIXME
-
-## License
-
-Copyright © 2013 FIXME
+Copyright © 2013 Yodit Stanton
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
